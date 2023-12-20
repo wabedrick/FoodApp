@@ -56,7 +56,9 @@ $net_profit = $profit_before_tax - $taxes - $tithe;
 
 //Getting the amount each household gets at the end of the month known as the administrative cost
 
-$sql = "SELECT SUM(investment) as total_amount_invested, investment FROM administrative";
+$sql = "SELECT SUM(investment) as total_amount_invested, investment FROM administrative 
+WHERE date_stored >= DATE(NOW()) - INTERVAL 30 DAY";
+
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $amount_invested = $row['investment'];

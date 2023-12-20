@@ -8,7 +8,7 @@ include 'connection/db_connection.php';
 
 $sql = "SELECT * FROM administrative ORDER BY administrative_id DESC";
 $result = $conn->query($sql);
-$row = $result->fetch_assoc();
+// $row = $result->fetch_assoc();
 
 ?>
 
@@ -37,7 +37,7 @@ $row = $result->fetch_assoc();
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-        <h2>View all the monthly administrative Costs Here</h2>
+        <h2>View all the monthly Investments Here</h2>
         <hr>
         </div>
         

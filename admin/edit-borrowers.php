@@ -38,7 +38,7 @@ unset($_SESSION['message']); ?>
 
 <section class="section">
   <!--form for adding borrowers-->
-  <form method="POST" action="edit-borrowers.php" class="col-lg-6">
+  <form method="POST" action="edit-borrowers.php" class="col-lg-6" enctype="multipart/form-data">
     <div>
       <h1 class="h3 mb-4 text-gray-800">Edit From Here</h1>
     </div>
@@ -53,6 +53,17 @@ unset($_SESSION['message']); ?>
     </div>
 
     <div class="form-group mt-1">
+      
+      <?php 
+      try{
+      // $group_query = "SELECT * FROM borrower_groups LEFT JOIN borrowers 
+      // ON borrowers.group_id = borrower_groups.group_d WHERE borrowers.ninNumber = $ninNumber";
+      // $group = $conn->query($group_query);
+      // $group_value = $group ->fetch_assoc();
+      } catch(mysqli_sql_exception){
+
+      }
+      ?>
       <label for="group">Group</label>
       <select name="group" id="group" class="form-control form-control-user" required>
         <option value="">Select Group</option>
@@ -79,7 +90,7 @@ unset($_SESSION['message']); ?>
     <div class="form-group mt-1">
       <label for="gender">Gender:</label>
       <select name="gender" id="gender" class="form-control form-control-user" required>
-        <option value="">Select</option>
+        <option value="<?php echo $row['gender']?>"><?php echo $row['gender']?></option>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
@@ -112,6 +123,11 @@ unset($_SESSION['message']); ?>
       <input type="text" name="district" id="district" value="<?php echo $row['district'] ?>" class="form-control form-control-user" required>
     </div>
 
+    <div class="col-mt-1">
+          <label for="inputAddress2" class="form-label">Add Photo</label>
+          <input type="file" class="form-control" id="inputApproved" name="photo" accept="image/*">
+    </div>
+
     <div class="form-group mt-2">
       <input type="submit" name="submit" class="btn btn-primary btn-user btn-block" value="Update">
     </div>
@@ -138,9 +154,17 @@ $email = $conn->real_escape_string($email);
 $location = $conn->real_escape_string($_POST['location']);
 $district = $conn->real_escape_string($_POST['district']);
 
+$photoName = $_FILES['photo']['name'];
+$imageFileType = strtolower(pathinfo($photoName, PATHINFO_EXTENSION));
+$photoTempPath = $_FILES['photo']['tmp_name'];
+$photoUploadPath = '../uploads/' . $firstname . "_" . $ninNumber.".".$imageFileType; 
+
+// Move the uploaded photo to the desired location
+move_uploaded_file($photoTempPath, $photoUploadPath);
+
 // Update the record in the database
-$sql = "UPDATE borrowers SET firstname='$firstname', lastname='$lastname', gender='$gender',
-phone='$phone', phone1='$phone1',email = '$email', location='$location', district='$district'
+$sql = "UPDATE borrowers SET firstname='$firstname', lastname='$lastname', gender='$gender',phone='$phone', 
+phone1='$phone1',email = '$email',location='$location',district='$district',photo = '$photoUploadPath'
 WHERE ninNumber = '$ninNumber'";
 if ($conn->query($sql)) {
     // Record updated successfully

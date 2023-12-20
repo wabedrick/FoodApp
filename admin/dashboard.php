@@ -15,7 +15,6 @@ if (!isset($_GET['view'])) {
 } else
   $period =  $_GET['view'] == 'month' ? 'Month' : ($_GET['view'] == 'week' ? 'Week' : ($_GET['view'] == 'overall' ? 'Overall' : 'Today'));
 
-
 if ($period == 'Today') {
   //Total number of loans taken today
   $sql = "SELECT COUNT(*) AS loan_count FROM loans WHERE release_date = '$currentDate'";
@@ -59,6 +58,7 @@ if ($period == 'Today') {
   //Total amount of processing and application fees received today
   $totalFeesToday = $totalProcessingFees + $totalApplicationFees;
 } elseif ($period == 'Week') {
+  
   $sql = "SELECT COUNT(*) AS loan_count FROM loans WHERE release_date >= DATE(NOW()) - INTERVAL 7 DAY";
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
@@ -424,19 +424,6 @@ while ($loan = $result->fetch_assoc()) {
 
               <div class="card info-card customers-card">
 
-                <!-- <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div> -->
-
                 <div class="card-body">
                   <h5 class="card-title">Borrower Groups</h5>
 
@@ -472,7 +459,6 @@ while ($loan = $result->fetch_assoc()) {
                      set_error_handler(function(){
                       throw new Exception('Dividing By Zero Occured');
                      });
-
 
                      try{
                     
@@ -746,9 +732,6 @@ while ($loan = $result->fetch_assoc()) {
                     });
                   </script>
 
-
-
-
                   <!-- End Line Chart -->
 
                 </div>
@@ -756,15 +739,8 @@ while ($loan = $result->fetch_assoc()) {
               </div>
             </div><!-- End Reports -->
 
-
-
-
-
-
-
           </div>
         </div><!-- End Left side columns -->
-
 
       </div>
     </section>

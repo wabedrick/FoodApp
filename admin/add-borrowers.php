@@ -28,7 +28,7 @@ if(!isset($_SESSION["username"])){
 
     <section class="section">
       <!--form for adding borrowers-->
-      <form method="POST" action="add-borrowers.php" class="col-lg-6">
+      <form method="POST" action="add-borrowers.php" class="col-lg-6" enctype="multipart/form-data">
         <div>
           <h1 class="h3 mb-4 text-gray-800">Fill the form bellow to add a borrower</h1>
         </div>

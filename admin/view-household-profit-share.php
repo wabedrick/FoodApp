@@ -17,7 +17,29 @@ FROM administrative WHERE date_stored >= DATE(NOW()) - INTERVAL 30 DAY";
 $result = $conn->query($query1);
 
 $row1 = $result->fetch_assoc();
-$share_percent = ($row1['investment'] / $row1['total_amount_invested']) * 100;
+
+// set_error_handler(function(){
+//   throw new Exception('Dividing By Zero Occured');
+//  });
+
+//  try{
+
+// $percent = intdiv($row1['investment'] , $row1['total_amount_invested']);
+
+// $share_percent = round( $percent* 100, 1);
+
+//  } catch(DivisionByZeroError $e){
+//   echo "There is no any loans taken yet";
+//   $percent = 0;
+//   $share_percent = round( $percent* 100, 1);
+//  }
+
+try{
+  $share_percent = ($row1['investment'] / $row1['total_amount_invested']) * 100;
+} catch(DivisionByZeroError $e){
+  echo "Got $e";
+}
+
 
 
 $sql2 = "SELECT SUM(processing_fee) AS total_process_month FROM loans
@@ -104,7 +126,7 @@ $administrative_cost = $share_percent * $net_profit;
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-        <h2>View all the monthly administrative Costs Here</h2>
+        <h2>View the monthly Investments Here</h2>
         <hr>
         </div>
         
